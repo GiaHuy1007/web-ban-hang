@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: electronics-ecommerce-backend
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ReactiveElasticsearchRepositoriesAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ReactiveElasticsearchRestClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# JWT Configuration
+app:
+  jwt:
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    access-token-expiration-ms: 900000 # 15 minutes
+    refresh-token-expiration-ms: 2592000000 # 30 days
+  otp:
+    expiration-minutes: 5
+    max-retry-attempts: 5
+    rate-limit-per-hour: 5
+  idempotency:
+    ttl-hours: 24
+  inventory:
+    reservation-timeout-minutes: 15
+  payment:
+    vnpay:
+      tmn-code: TEST_TMN
+      hash-secret: TEST_SECRET
+      pay-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+      return-url: http://localhost:8080/api/v1/payments/vnpay/return
+    momo:
+      partner-code: TEST_MOMO
+      access-key: TEST_ACCESS
+      secret-key: TEST_SECRET
+      endpoint: https://test-payment.momo.vn/v2/gateway/api/create
+      return-url: http://localhost:8080/api/v1/payments/momo/return
+      notify-url: http://localhost:8080/api/v1/payments/webhook/momo
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus, metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true

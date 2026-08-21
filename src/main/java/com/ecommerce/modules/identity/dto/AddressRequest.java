@@ -1,0 +1,36 @@
+package com.ecommerce.modules.identity.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AddressRequest {
+
+    @NotBlank(message = "Tên người nhận không được để trống.")
+    private String recipientName;
+
+    @NotBlank(message = "Số điện thoại nhận hàng không được để trống.")
+    @Pattern(regexp = "^(0[3|5|7|8|9])+([0-9]{8})$", message = "Số điện thoại không hợp lệ (10 số).")
+    private String phoneNumber;
+
+    @NotBlank(message = "Địa chỉ chi tiết không được để trống.")
+    private String streetAddress;
+
+    private String ward;
+
+    @NotBlank(message = "Quận/Huyện không được để trống.")
+    private String district;
+
+    @NotBlank(message = "Tỉnh/Thành phố không được để trống.")
+    private String city;
+
+    @Builder.Default
+    private Boolean isDefault = false;
+}
